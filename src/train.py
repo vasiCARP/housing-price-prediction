@@ -8,7 +8,7 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
 
 # 1. Citire date
-df = pd.read_csv("data/train.csv")
+df = pd.read_csv("train.csv")
 
 # 2. Selectam cateva coloane simple
 features = ["GrLivArea", "BedroomAbvGr", "FullBath"]
@@ -43,7 +43,7 @@ model.compile(
 )
 
 # 7. Antrenare
-model.fit(
+history = model.fit(
     X_train, y_train,
     validation_split=0.2,
     epochs=50,
@@ -60,3 +60,23 @@ sample = scaler.transform(sample)
 
 prediction = model.predict(sample)
 print("Pret estimat:", prediction[0][0])
+
+import matplotlib.pyplot as plt
+
+# Loss
+plt.plot(history.history['loss'], label='train loss')
+plt.plot(history.history['val_loss'], label='val loss')
+plt.legend()
+plt.title("Loss over epochs")
+plt.xlabel("Epoch")
+plt.ylabel("Loss")
+plt.show()
+
+# MAE
+plt.plot(history.history['mae'], label='train mae')
+plt.plot(history.history['val_mae'], label='val mae')
+plt.legend()
+plt.title("MAE over epochs")
+plt.xlabel("Epoch")
+plt.ylabel("MAE")
+plt.show()
